@@ -12,12 +12,14 @@ DIR=$(pwd)
 
 #Installation de python / gunicorn / supervisor + dépendances
 sudo apt update
-sudo apt -y install gcc curl gunicorn python-setuptools lsb-release \
-  apt-transport-https wget build-essential zlib1g-dev libncurses5-dev \
-  libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev curl \
-  libbz2-dev apache2 python-dev libpq-dev libgeos-dev supervisor unzip \
-  virtualenv libcurl4-openssl-dev libssl-dev libglib2.0-0 libsm6 libxext6 \
-  libxrender-dev postgresql postgis python3 python3-dev python3-venv python3-pip
+
+# # NE FONCTIONNE PAS
+# sudo apt -y install gcc curl gunicorn python-setuptools lsb-release \
+#   apt-transport-https wget build-essential zlib1g-dev libncurses5-dev \
+#   libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev curl \
+#   libbz2-dev apache2 python-dev libpq-dev libgeos-dev supervisor unzip \
+#   virtualenv libcurl4-openssl-dev libssl-dev libglib2.0-0 libsm6 libxext6 \
+#   libxrender-dev postgresql postgis python3 python3-dev python3-venv python3-pip
 
 sudo apt-get clean
 
@@ -54,18 +56,21 @@ npm install
 
 echo "Build frontend"
 npm run build:i18n-ssr
-#  Installation de la conf
-sudo cp ../install/supervisor/gncitizen_frontssr-service.conf /etc/supervisor/conf.d/
-sudo sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/gncitizen_frontssr-service.conf
-sudo sed -i "s%SYSUSER%$(whoami)%" /etc/supervisor/conf.d/gncitizen_frontssr-service.conf
-sudo cp ../install/apache/gncitizen.conf /etc/apache2/sites-available/gncitizen.conf
+
+# NON NECESSAIRE EN MODE DEV
+##  Installation de la conf
+# sudo cp ../install/supervisor/gncitizen_frontssr-service.conf /etc/supervisor/conf.d/
+# sudo sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/gncitizen_frontssr-service.conf
+# sudo sed -i "s%SYSUSER%$(whoami)%" /etc/supervisor/conf.d/gncitizen_frontssr-service.conf
+# sudo cp ../install/apache/gncitizen.conf /etc/apache2/sites-available/gncitizen.conf
 
 cd ${DIR}
 . ./install/generate_password.sh
 
-sudo sed -i "s%APP_PATH%${DIR}%" /etc/apache2/sites-available/gncitizen.conf
-sudo sed -i "s%mydomain.net%${URL}%" /etc/apache2/sites-available/gncitizen.conf
-sudo sed -i "s%backoffice_username%${backoffice_username}%" /etc/apache2/sites-available/gncitizen.conf
+# NON NECESSAIRE EN MODE DEV
+# sudo sed -i "s%APP_PATH%${DIR}%" /etc/apache2/sites-available/gncitizen.conf
+# sudo sed -i "s%mydomain.net%${URL}%" /etc/apache2/sites-available/gncitizen.conf
+# sudo sed -i "s%backoffice_username%${backoffice_username}%" /etc/apache2/sites-available/gncitizen.conf
 
 # cd ..
 
@@ -90,21 +95,23 @@ cp -r $DIR/frontend/src/assets/* $DIR/media
 # Creation des repertoires de log
 mkdir -p var/log
 
+# POURQUOI CREER UN FICHIER VIDE ?
 touch init_done
 
-#Création de la conf supervisor
-sudo cp install/supervisor/gncitizen_api-service.conf /etc/supervisor/conf.d/
-sudo sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/gncitizen_api-service.conf
-sudo sed -i "s%SYSUSER%$(whoami)%" /etc/supervisor/conf.d/gncitizen_api-service.conf
+# NON NECESSAIRE EN MODE DEV
+##Création de la conf supervisor
+# sudo cp install/supervisor/gncitizen_api-service.conf /etc/supervisor/conf.d/
+# sudo sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/gncitizen_api-service.conf
+# sudo sed -i "s%SYSUSER%$(whoami)%" /etc/supervisor/conf.d/gncitizen_api-service.conf
 
-# Prise en compte de la nouvelle config Apache
-sudo a2enmod proxy_http
-sudo a2ensite gncitizen.conf
-sudo apache2ctl restart
+## Prise en compte de la nouvelle config Apache
+# sudo a2enmod proxy_http
+# sudo a2ensite gncitizen.conf
+# sudo apache2ctl restart
 
-# Prise en compte de la nouvelle config Supervisor
-sudo supervisorctl reread
-sudo supervisorctl reload
+## Prise en compte de la nouvelle config Supervisor
+# sudo supervisorctl reread
+# sudo supervisorctl reload
 
 # Installation de Taxhub si demandée
 if $install_taxhub; then
