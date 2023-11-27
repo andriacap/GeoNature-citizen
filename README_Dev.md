@@ -78,7 +78,7 @@ Si ça ne fonctionne pas , plusieurs raisons :
   ```sh
      # Ajout d'un programme
      project_name="'project_2'"
-     sudo -u postgres -s psql -d $db_name -f /home/andriac/applications/gn-citizen-dev/sql_citizen/add_project.sql -v project_name=$project_name
+     sudo -u postgres -s psql -d $db_name -f /path_to_gn_citizen/sql_citizen/add_project.sql -v project_name=$project_name
 
   ```
 - 4.4 Insertion d'une géometrie
@@ -86,7 +86,7 @@ Si ça ne fonctionne pas , plusieurs raisons :
      # Ajout d'une geom
      geom_name="'geom_name'"
      desc="'description'"
-     sudo -u postgres -s psql -d $db_name -f /home/andriac/applications/gn-citizen-dev/sql_citizen/add_geom.sql -v geom_name=$geom_name
+     sudo -u postgres -s psql -d $db_name -f /path_to_gn_citizen/sql_citizen/add_geom.sql -v geom_name=$geom_name
   ```
   
 - 4.5 Insertion d'un programme
@@ -97,5 +97,5 @@ Si ça ne fonctionne pas , plusieurs raisons :
      title="'programme_exemple'";
      id_module=2; # id_module = 2 (inventaire) et 1 = observations taxo
      id_geom=1;
-     sudo -u postgres -s psql -d $db_name -f /home/andriac/applications/gn-citizen-dev/sql_citizen/add_program.sql -v id_project=$id_project title=$title id_module=$id_module id_geom=$id_geom
+     sudo -u postgres -s psql -d $db_name -f /path_to_gn_citizen/sql_citizen/add_program.sql -v id_project=$id_project title=$title id_module=$id_module id_geom=$id_geom
   ```
